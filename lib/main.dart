@@ -91,6 +91,7 @@ class _HomePageState extends State<HomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            const MyCustomForm(),
             const Text('Todo\'s', style: TextStyle(fontSize: 25)),
             ListView.builder(
                 shrinkWrap: true,
@@ -116,6 +117,28 @@ class _HomePageState extends State<HomePage> {
         tooltip: 'Increment',
         child: const Text('add'),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class MyCustomForm extends StatelessWidget {
+  const MyCustomForm({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: const <Widget>[
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+          child: TextField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: 'enter your to-do',
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
