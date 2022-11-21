@@ -97,22 +97,28 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have clicked the button this many times:',
+            ListView(
+              padding: const EdgeInsets.all(8),
+              shrinkWrap: true,
+              children: <Widget>[
+                Container(
+                  height: 50,
+                  color: Colors.amber[600],
+                  child: const Center(child: Text('Entry A')),
+                ),
+                Container(
+                  height: 50,
+                  color: Colors.amber[500],
+                  child: const Center(child: Text('Entry B')),
+                ),
+                Container(
+                  height: 50,
+                  color: Colors.amber[100],
+                  child: const Center(child: Text('Entry C')),
+                ),
+              ],
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            const Icon(
-              Icons.favorite,
-              color: Colors.pink,
-              size: 24.0,
-              semanticLabel: 'Text to announce in accessibility modes',
-            ),
-            const Text(
-              'hej'),
-            
+            Text('hej $_counter'),
 
           ],
         ),
