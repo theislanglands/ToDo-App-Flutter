@@ -75,10 +75,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Center(
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
+//
           // Invoke "debug painting" (press "p" in the console, choose the
           // "Toggle Debug Paint" action from the Flutter Inspector in Android
           // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
@@ -91,7 +88,7 @@ class _HomePageState extends State<HomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const MyCustomForm(),
+            const TodoInputForm(),
             const Text('Todo\'s', style: TextStyle(fontSize: 25)),
             ListView.builder(
                 shrinkWrap: true,
@@ -116,29 +113,39 @@ class _HomePageState extends State<HomePage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Text('add'),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }
 
-class MyCustomForm extends StatelessWidget {
-  const MyCustomForm({super.key});
+class TodoInputForm extends StatelessWidget {
+  const TodoInputForm({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const <Widget>[
+      children: <Widget>[
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           child: TextField(
-            decoration: InputDecoration(
+            onChanged: (text) {
+              print('input text field content: $text');
+            },
+            decoration: const InputDecoration(
               border: OutlineInputBorder(),
               hintText: 'enter your to-do',
+              suffixIcon: Icon(
+                Icons.add_box_outlined,
+              ),
             ),
           ),
         ),
       ],
     );
+  }
+
+  void somefunction() {
+    print('button pressed');
   }
 }
