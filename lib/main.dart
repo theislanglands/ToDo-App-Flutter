@@ -64,6 +64,13 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _deleteTodo(int index) {
+    setState(() {
+      _todos.removeAt(index);
+      print("delete fkt");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,16 +119,28 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(8),
                 itemCount: _todos.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                      height: 50,
+                  return Center(
+                    child: Card(
                       color: Colors.blueGrey[200 + (index % 2)],
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
+                      child: ListTile(
+                        // height: 50,
+                        //width: double.infinity,
+                        title: Text(
                           textAlign: TextAlign.left,
                           _todos[index],
                         ),
-                      ));
+                        trailing: IconButton(
+                          icon: const Icon(Icons.delete_rounded),
+                          tooltip: "delete",
+                          onPressed: () {
+                            _deleteTodo(index);
+                            print(index);
+                            todoInputField.clear();
+                          },
+                        ),
+                      ),
+                    ),
+                  );
                 }),
           ],
         ),
