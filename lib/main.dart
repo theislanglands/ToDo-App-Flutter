@@ -132,11 +132,16 @@ class TodoInputForm extends StatelessWidget {
             onChanged: (text) {
               print('input text field content: $text');
             },
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               border: OutlineInputBorder(),
               hintText: 'enter your to-do',
-              suffixIcon: Icon(
-                Icons.add_box_outlined,
+              suffixIcon: IconButton(
+                icon: const Icon(Icons.add_box_rounded),
+                tooltip: "add",
+
+                onPressed: () {
+                  print('button pressed');
+                },
               ),
             ),
           ),
