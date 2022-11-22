@@ -44,9 +44,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _counter = 0;
-  final List<String> _todos = ['Buy Milk', 'Feed cat', 'Do washing'];
-  final List<String> entries = <String>['A', 'B', 'C'];
-  final List<int> colorCodes = <int>[600, 500, 100];
+  List<String> _todos = ['Buy Milk', 'Feed cat', 'Do washing'];
+  final todoInputField = TextEditingController();
 
   void _incrementCounter() {
     setState(() {
@@ -59,14 +58,14 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _addTodo(String todo) {
+    setState(() {
+      _todos.add(todo);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the HomePage object that was created by
@@ -80,15 +79,33 @@ class _HomePageState extends State<HomePage> {
           // "Toggle Debug Paint" action from the Flutter Inspector in Android
           // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
           // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
+
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const TodoInputForm(),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextField(
+                    controller: todoInputField,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'enter your to-do',
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.add_box_rounded),
+                        tooltip: "add",
+                        onPressed: () {
+                          _addTodo(todoInputField.text);
+                          todoInputField.clear();
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
             const Text('Todo\'s', style: TextStyle(fontSize: 25)),
             ListView.builder(
                 shrinkWrap: true,
@@ -115,42 +132,5 @@ class _HomePageState extends State<HomePage> {
         child: const Text('add'),
       ),
     );
-  }
-}
-
-class TodoInputForm extends StatelessWidget {
-  const TodoInputForm({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            onChanged: (text) {
-              print('input text field content: $text');
-            },
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'enter your to-do',
-              suffixIcon: IconButton(
-                icon: const Icon(Icons.add_box_rounded),
-                tooltip: "add",
-
-                onPressed: () {
-                  print('button pressed');
-                },
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  void somefunction() {
-    print('button pressed');
   }
 }
