@@ -44,12 +44,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<String> _todos = ['Buy Milk', 'Feed cat', 'Do washing'];
+  List<String> _dones = ['done nr1', 'done 2'];
   final todoInputField = TextEditingController();
 
   void _addTodo(String todo) {
     setState(() {
       // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method 
+      // changed in this State, which causes it to rerun the build method
       _todos.add(todo);
     });
   }
@@ -58,6 +59,19 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _todos.removeAt(index);
       print("delete fkt");
+    });
+  }
+
+  void _done(int index) {
+    setState(() {
+      _dones.add(_todos.elementAt(index));
+      _todos.removeAt(index);
+    });
+  }
+
+  void _deleteDone(int index) {
+    setState(() {
+      _dones.removeAt(index);
     });
   }
 
@@ -71,12 +85,6 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Center(
         child: Column(
-//
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Column(
@@ -103,9 +111,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            const Text(
-              'Todo\'s', style: TextStyle(fontSize: 25)
-              ),
+            const Text('Todo\'s', style: TextStyle(fontSize: 25)),
             ListView.builder(
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(8),
@@ -130,9 +136,32 @@ class _HomePageState extends State<HomePage> {
                     ),
                   );
                 }),
-            const Text(
-              'Done\'s', style: TextStyle(fontSize: 25)
-              ),
+            const Text('Done\'s', style: TextStyle(fontSize: 25)),
+            ListView.builder(
+                shrinkWrap: true,
+                padding: const EdgeInsets.all(8),
+                itemCount: _dones.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Center(
+                    child: Card(
+                      color: Colors.blueGrey[200 + (index % 2)],
+                      child: ListTile(
+                        title: Text(
+                          textAlign: TextAlign.left,
+                          _dones[index],
+                          style: const TextStyle(decoration: TextDecoration.lineThrough),
+                        ),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.delete_rounded),
+                          tooltip: "delete",
+                          onPressed: () {
+                            _deleteDone(index);
+                          },
+                        ),
+                      ),
+                    ),
+                  );
+                }),
           ],
         ),
       ),
