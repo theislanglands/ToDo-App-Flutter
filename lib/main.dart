@@ -43,23 +43,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
   List<String> _todos = ['Buy Milk', 'Feed cat', 'Do washing'];
   final todoInputField = TextEditingController();
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   void _addTodo(String todo) {
     setState(() {
+      // This call to setState tells the Flutter framework that something has
+      // changed in this State, which causes it to rerun the build method 
       _todos.add(todo);
     });
   }
@@ -113,7 +103,9 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            const Text('Todo\'s', style: TextStyle(fontSize: 25)),
+            const Text(
+              'Todo\'s', style: TextStyle(fontSize: 25)
+              ),
             ListView.builder(
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(8),
@@ -123,8 +115,6 @@ class _HomePageState extends State<HomePage> {
                     child: Card(
                       color: Colors.blueGrey[200 + (index % 2)],
                       child: ListTile(
-                        // height: 50,
-                        //width: double.infinity,
                         title: Text(
                           textAlign: TextAlign.left,
                           _todos[index],
@@ -134,21 +124,17 @@ class _HomePageState extends State<HomePage> {
                           tooltip: "delete",
                           onPressed: () {
                             _deleteTodo(index);
-                            print(index);
-                            todoInputField.clear();
                           },
                         ),
                       ),
                     ),
                   );
                 }),
+            const Text(
+              'Done\'s', style: TextStyle(fontSize: 25)
+              ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Text('add'),
       ),
     );
   }
