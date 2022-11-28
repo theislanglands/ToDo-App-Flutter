@@ -125,12 +125,24 @@ class _HomePageState extends State<HomePage> {
                           textAlign: TextAlign.left,
                           _todos[index],
                         ),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.delete_rounded),
-                          tooltip: "delete",
-                          onPressed: () {
-                            _deleteTodo(index);
-                          },
+                        trailing: Wrap(
+                          spacing: 12, // space between two icons
+                          children: <Widget>[
+                            IconButton(
+                              icon: const Icon(Icons.check_circle),
+                              tooltip: "mark as done",
+                              onPressed: () {
+                                _done(index);
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete_rounded),
+                              tooltip: "delete",
+                              onPressed: () {
+                                _deleteTodo(index);
+                              },
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -149,7 +161,8 @@ class _HomePageState extends State<HomePage> {
                         title: Text(
                           textAlign: TextAlign.left,
                           _dones[index],
-                          style: const TextStyle(decoration: TextDecoration.lineThrough),
+                          style: const TextStyle(
+                              decoration: TextDecoration.lineThrough),
                         ),
                         trailing: IconButton(
                           icon: const Icon(Icons.delete_rounded),
@@ -167,4 +180,11 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+
+class Todo {
+  String content;
+  bool isDone = false;
+
+  Todo({required this.content});
 }
