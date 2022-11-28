@@ -27,15 +27,6 @@ class MyApp extends StatelessWidget {
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -43,35 +34,27 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> _todos = ['Buy Milk', 'Feed cat', 'Do washing'];
-  List<String> _dones = ['done nr1', 'done 2'];
+  List<Todo> _todos_list = [
+    Todo(content: "buy chesses"),
+    Todo(content: "get drunk")
+  ];
   final todoInputField = TextEditingController();
 
   void _addTodo(String todo) {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method
-      _todos.add(todo);
+    setState(() { // reruns build method on state change
+      _todos_list.add(Todo(content: todo));
     });
   }
 
-  void _deleteTodo(int index) {
+  void _deleteTodo(Todo todo) {
     setState(() {
-      _todos.removeAt(index);
-      print("delete fkt");
+      _todos_list.remove(todo);
     });
   }
 
-  void _done(int index) {
+  void _done(Todo todo) {
     setState(() {
-      _dones.add(_todos.elementAt(index));
-      _todos.removeAt(index);
-    });
-  }
-
-  void _deleteDone(int index) {
-    setState(() {
-      _dones.removeAt(index);
+      todo.isDone = true;
     });
   }
 
@@ -79,9 +62,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the HomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(widget.title), // title value from the HomePage object
       ),
       body: Center(
         child: Column(
@@ -111,35 +92,43 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
+
+            // todo section!
             const Text('Todo\'s', style: TextStyle(fontSize: 25)),
             ListView.builder(
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(8),
-                itemCount: _todos.length,
+                itemCount: _todos_list
+                    .where((element) => element.isDone == false)
+                    .toList()
+                    .length,
                 itemBuilder: (BuildContext context, int index) {
+                  List<Todo> unDones = _todos_list
+                      .where((todo) => todo.isDone == false)
+                      .toList();
                   return Center(
                     child: Card(
                       color: Colors.blueGrey[200 + (index % 2)],
                       child: ListTile(
                         title: Text(
                           textAlign: TextAlign.left,
-                          _todos[index],
+                          unDones[index].content,
                         ),
                         trailing: Wrap(
-                          spacing: 12, // space between two icons
+                          spacing: 8, // space between the icons
                           children: <Widget>[
                             IconButton(
                               icon: const Icon(Icons.check_circle),
                               tooltip: "mark as done",
                               onPressed: () {
-                                _done(index);
+                                _done(unDones[index]);
                               },
                             ),
                             IconButton(
                               icon: const Icon(Icons.delete_rounded),
                               tooltip: "delete",
                               onPressed: () {
-                                _deleteTodo(index);
+                                _deleteTodo(unDones[index]);
                               },
                             ),
                           ],
@@ -148,19 +137,28 @@ class _HomePageState extends State<HomePage> {
                     ),
                   );
                 }),
+
+            // done section
             const Text('Done\'s', style: TextStyle(fontSize: 25)),
+
             ListView.builder(
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(8),
-                itemCount: _dones.length,
+                itemCount: _todos_list
+                    .where((element) => element.isDone == true)
+                    .toList()
+                    .length,
                 itemBuilder: (BuildContext context, int index) {
+                  List<Todo> dones =
+                      _todos_list.where((todo) => todo.isDone == true).toList();
+
                   return Center(
                     child: Card(
                       color: Colors.blueGrey[200 + (index % 2)],
                       child: ListTile(
                         title: Text(
                           textAlign: TextAlign.left,
-                          _dones[index],
+                          dones[index].content,
                           style: const TextStyle(
                               decoration: TextDecoration.lineThrough),
                         ),
@@ -168,7 +166,7 @@ class _HomePageState extends State<HomePage> {
                           icon: const Icon(Icons.delete_rounded),
                           tooltip: "delete",
                           onPressed: () {
-                            _deleteDone(index);
+                            _deleteTodo(dones[index]);
                           },
                         ),
                       ),
