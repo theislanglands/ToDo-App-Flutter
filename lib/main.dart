@@ -34,21 +34,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Todo> _todos_list = [
-    Todo(content: "buy chesses"),
-    Todo(content: "get drunk")
+  final List<Todo> _todos = [
+    Todo(content: "I'm a preprogrammed todo - try to mark me done"),
+    Todo(content: "I'm another one - try to delete me"),
+    Todo(content: "I'm allready done", isDone: true),
+    Todo(content: "I'm here just to show the nice card colors!")
   ];
   final todoInputField = TextEditingController();
 
   void _addTodo(String todo) {
     setState(() { // reruns build method on state change
-      _todos_list.add(Todo(content: todo));
+      _todos.add(Todo(content: todo));
     });
   }
 
   void _deleteTodo(Todo todo) {
     setState(() {
-      _todos_list.remove(todo);
+      _todos.remove(todo);
     });
   }
 
@@ -95,20 +97,23 @@ class _HomePageState extends State<HomePage> {
 
             // todo section!
             const Text('Todo\'s', style: TextStyle(fontSize: 25)),
+            Container(
+              height: 200,
+              child: 
             ListView.builder(
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(8),
-                itemCount: _todos_list
+                itemCount: _todos
                     .where((element) => element.isDone == false)
                     .toList()
                     .length,
                 itemBuilder: (BuildContext context, int index) {
-                  List<Todo> unDones = _todos_list
+                  List<Todo> unDones = _todos
                       .where((todo) => todo.isDone == false)
                       .toList();
                   return Center(
                     child: Card(
-                      color: Colors.blueGrey[200 + (index % 2)],
+                      color: Colors.blueGrey[100 + (200 * (index % 2))],
                       child: ListTile(
                         title: Text(
                           textAlign: TextAlign.left,
@@ -137,24 +142,28 @@ class _HomePageState extends State<HomePage> {
                     ),
                   );
                 }),
+                ),
 
             // done section
             const Text('Done\'s', style: TextStyle(fontSize: 25)),
 
+            Container(
+            height: 200,
+            child:
             ListView.builder(
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(8),
-                itemCount: _todos_list
+                itemCount: _todos
                     .where((element) => element.isDone == true)
                     .toList()
                     .length,
                 itemBuilder: (BuildContext context, int index) {
                   List<Todo> dones =
-                      _todos_list.where((todo) => todo.isDone == true).toList();
+                      _todos.where((todo) => todo.isDone == true).toList();
 
                   return Center(
                     child: Card(
-                      color: Colors.blueGrey[200 + (index % 2)],
+                      color: Colors.blueGrey[500],
                       child: ListTile(
                         title: Text(
                           textAlign: TextAlign.left,
@@ -173,6 +182,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   );
                 }),
+                ),
           ],
         ),
       ),
@@ -182,7 +192,8 @@ class _HomePageState extends State<HomePage> {
 
 class Todo {
   String content;
-  bool isDone = false;
+  bool isDone;
 
-  Todo({required this.content});
+  // constructor setting isDone to default false, and require a text input
+  Todo({required this.content, this.isDone=false}); 
 }
